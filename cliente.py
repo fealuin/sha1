@@ -17,6 +17,7 @@ def getMsg():
 
 
 def hashnormal():
+    sock.sendall('op1')
     msg=getMsg()
     h=sha1.sha1(msg)
     msg=msg+h
@@ -33,6 +34,7 @@ def salir():
     exit()
     return 0
 def menu():
+    sock.sendall('1')
     while True:
         print('\t1.- Hash normal\n\t2.- Hash con Clave Simetrica\n\t3.- Hash con Valor Secreto\n\t4.- Salir')
         try:

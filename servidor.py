@@ -19,17 +19,17 @@ while True:
     
 def handleHn():
 	hn=connection.recv(1024)
-	print 'Se ha recibido el mensaje %s, el texto es %s y el hash %s'%(hn,hn[:-64],hn[:64])
-	hh=sha1.sha1(hn[:-64])
-	print 'Al calcular el hash sha1 del texto se obtiene: %s'%hh+' ' if hh==hn[:64] else ' no ' + 'coincide'
+	print 'Se ha recibido el mensaje %s, el texto es %s y el hash %s'%(hn,hn[:-40],hn[-40:])
+	hh=sha1.sha1(hn[:-40])
+	print hh,len(hh)
+	print 'Al calcular el hash sha1 del texto \"%s\"" se obtiene: %s que'%(hn[:-40],hh)+' ' if hh==hn[-40:] else ' no ', 'coincide'
 
 while True:
     msg=connection.recv(1024)
     if msg=='op1':
     	handleHn()
     if msg:
-        print 'Se ha recibido :%s'%msg
-        
+        print 'Se ha recibido :%s'%msg    
 print "Intercambiando Clave Publica"
 
 connection.sendall(str(clavePublica[0])+"|"+str(clavePublica[1]))
