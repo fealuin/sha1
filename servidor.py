@@ -20,14 +20,26 @@ while True:
 def getValorSecreto():
     return raw_input('Escriba el valor secreto:')
 
+def getClave():
+    return (raw_input('Escriba la clave compartida:')+" "*16)[:16]
+
 def handleHn():
 	hn=connection.recv(1024)
 	print 'Se ha recibido el mensaje %s, el texto es %s y el hash %s'%(hn,hn[:-40],hn[-40:])
 	hh=sha1.sha1(hn[:-40])
 	print hh,len(hh)
 	print 'Al calcular el hash sha1 del texto \"%s\" se obtiene: %s que'%(hn[:-40],hh)+' ' if hh==hn[-40:] else ' no ', 'coincide'
+
 def handleHashClaveSimetrica():
-	return 0
+	hn=connection.recv(1024)
+	print 'Se ha recibido el mensaje %s, el texto es %s y el hash %s'%(hn,hn[:-16],hn[-16:])
+	k=getClave()
+	hh=sha1.sha1(hn[:-16])
+	print hh,len(hh)
+	dhh=aes.desencriptarAes(hn[-16:],k)
+	print 'Al desenciptar %s se obtiene %s'%(hn[-16:],dhh)
+	print 'Al calcular el hash sha1 del texto \"%s\" se obtiene: %s que'%(hn[:-16],hh)+' ' if hh==dhh else ' no ', 'coincide'
+
 def handleHashValorSecreto():
 	hvs=connection.recv(1024)
 	print 'Se ha recibido el mensaje %s, el texto es %s y el hash %s'%(hvs,hvs[:-40],hvs[-40:])
@@ -35,7 +47,6 @@ def handleHashValorSecreto():
 	hh=sha1.sha1(hvs[:-40]+vs)
 	print hh,len(hh)
 	print 'Al calcular el hash sha1 del texto \"%s\" mas el valor secreto %s se obtiene: %s que'%(hvs[:-40],vs,hh),' ' if hh==hvs[-40:] else ' no ', 'coincide'
-
 
 while True:
     msg=connection.recv(1024)

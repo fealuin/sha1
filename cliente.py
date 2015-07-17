@@ -16,6 +16,8 @@ def getMsg():
     return raw_input('Escriba su mensaje:')
 def getValorSecreto():
     return raw_input('Escriba el valor secreto:')
+def getClave():
+    return (raw_input('Escriba la clave compartida:')+" "*16)[:16]
 
 def hashnormal():
     sock.sendall('hn')
@@ -27,7 +29,10 @@ def hashnormal():
 def hashClaveSimetrica():
     sock.sendall('hcs')
     msg=getMsg()
-    h=sha1.sha1(msg)
+    k=getClave()
+    ha=sha1.sha1(msg)
+    h=aes.encriptarAes(ha,k)+aes.encriptarAes(ha[16:32],k)#+aes.encriptarAes(ha[32:48],k)
+    print 'largo hash Encriptado %d'%len(h)
     msg=msg+h
     sock.sendall(msg)
     return 0
@@ -35,7 +40,7 @@ def hashValorSecreto():
     sock.sendall('hvs')
     msg=getMsg()
     vs=getValorSecreto()
-    h=sha1.sha1(msg+vs)
+    h=sha1.sha1(msg)
     msg=msg+h
     sock.sendall(msg)
     return 0
