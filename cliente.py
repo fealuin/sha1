@@ -14,18 +14,30 @@ except:
 print("Se ha establecido conexion con el servidor, para salir ingrese un mensaje vacio")
 def getMsg():
     return raw_input('Escriba su mensaje:')
-
+def getValorSecreto():
+    return raw_input('Escriba el valor secreto:')
 
 def hashnormal():
-    sock.sendall('op1')
+    sock.sendall('hn')
     msg=getMsg()
     h=sha1.sha1(msg)
     msg=msg+h
     sock.sendall(msg)
     return 0
 def hashClaveSimetrica():
+    sock.sendall('hcs')
+    msg=getMsg()
+    h=sha1.sha1(msg)
+    msg=msg+h
+    sock.sendall(msg)
     return 0
 def hashValorSecreto():
+    sock.sendall('hvs')
+    msg=getMsg()
+    vs=getValorSecreto()
+    h=sha1.sha1(msg+vs)
+    msg=msg+h
+    sock.sendall(msg)
     return 0
 def salir():
     sock.sendall('0')

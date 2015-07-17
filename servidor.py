@@ -11,23 +11,40 @@ print 'Iniciando servidor %s en puerto %s' % server_address
 sock.bind(server_address)
 sock.listen(1)
 
+
 while True:
     print >>sys.stderr, 'Esperando por una conexion'
     connection, client_address = sock.accept()
     print "Se ha recibido una conexion desde la direccion:",client_address[0],":",client_address[1]
     break
-    
+def getValorSecreto():
+    return raw_input('Escriba el valor secreto:')
+
 def handleHn():
 	hn=connection.recv(1024)
 	print 'Se ha recibido el mensaje %s, el texto es %s y el hash %s'%(hn,hn[:-40],hn[-40:])
 	hh=sha1.sha1(hn[:-40])
 	print hh,len(hh)
-	print 'Al calcular el hash sha1 del texto \"%s\"" se obtiene: %s que'%(hn[:-40],hh)+' ' if hh==hn[-40:] else ' no ', 'coincide'
+	print 'Al calcular el hash sha1 del texto \"%s\" se obtiene: %s que'%(hn[:-40],hh)+' ' if hh==hn[-40:] else ' no ', 'coincide'
+def handleHashClaveSimetrica():
+	return 0
+def handleHashValorSecreto():
+	hvs=connection.recv(1024)
+	print 'Se ha recibido el mensaje %s, el texto es %s y el hash %s'%(hvs,hvs[:-40],hvs[-40:])
+	vs=getValorSecreto()
+	hh=sha1.sha1(hvs[:-40]+vs)
+	print hh,len(hh)
+	print 'Al calcular el hash sha1 del texto \"%s\" mas el valor secreto %s se obtiene: %s que'%(hvs[:-40],vs,hh),' ' if hh==hvs[-40:] else ' no ', 'coincide'
+
 
 while True:
     msg=connection.recv(1024)
-    if msg=='op1':
+    if msg=='hn':
     	handleHn()
+    elif msg=='hcs':
+    	handleHashClaveSimetrica()
+    elif msg=='hvs':
+    	handleHashValorSecreto()
     if msg:
         print 'Se ha recibido :%s'%msg    
 print "Intercambiando Clave Publica"
