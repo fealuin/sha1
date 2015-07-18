@@ -316,4 +316,16 @@ def desencriptarAes(texto,k):
       log.tolog("\nResultado Desencriptacion: %s"%estadoAtexto(estado))
       return estadoAtexto(estado)
 
+def aes(tipo,texto,k):
+  while not len(texto)%16==0:
+    texto=texto+' '
+  k=(k+' '*16)[:16]
+  output=''
+  for i in range (len(texto)/16):
+    if tipo=='e':
+      output=output+encriptarAes(texto[i*16:i*16+16],k)
+      print "encriptando %s"%texto[i*16:i*16+16],
+    if tipo=='d':
+      output=output+desencriptarAes(texto[i*16:i*16+16],k)
+  return output
 

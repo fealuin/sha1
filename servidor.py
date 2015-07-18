@@ -32,13 +32,13 @@ def handleHn():
 
 def handleHashClaveSimetrica():
 	hn=connection.recv(1024)
-	print 'Se ha recibido el mensaje %s, el texto es %s y el hash %s'%(hn,hn[:-16],hn[-16:])
+	print 'Se ha recibido el mensaje %s, el texto es %s y el hash %s'%(hn,hn[:-48],hn[-48:])
 	k=getClave()
-	hh=sha1.sha1(hn[:-16])
+	hh=sha1.sha1(hn[:-48])
 	print hh,len(hh)
-	dhh=aes.desencriptarAes(hn[-16:],k)
-	print 'Al desenciptar %s se obtiene %s'%(hn[-16:],dhh)
-	print 'Al calcular el hash sha1 del texto \"%s\" se obtiene: %s que'%(hn[:-16],hh)+' ' if hh==dhh else ' no ', 'coincide'
+	dhh=(aes.aes('d',hn[-48:],k))[:40]
+	print 'Al desenciptar %s se obtiene %s'%(hn[-48:],dhh)
+	print 'Al calcular el hash sha1 del texto \"%s\" se obtiene: %s que'%(hn[:-48],hh)+' ' if hh==dhh else ' no ', 'coincide'
 
 def handleHashValorSecreto():
 	hvs=connection.recv(1024)

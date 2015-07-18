@@ -31,7 +31,7 @@ def hashClaveSimetrica():
     msg=getMsg()
     k=getClave()
     ha=sha1.sha1(msg)
-    h=aes.encriptarAes(ha,k)+aes.encriptarAes(ha[16:32],k)#+aes.encriptarAes(ha[32:48],k)
+    h=aes.aes('e',ha,k)#+aes.encriptarAes(ha[32:48],k)
     print 'largo hash Encriptado %d'%len(h)
     msg=msg+h
     sock.sendall(msg)
