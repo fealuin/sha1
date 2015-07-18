@@ -231,9 +231,10 @@ def xorFilaFila(fila1,fila2):
       for i in range(4):
             aux.append(fila1[i]^fila2[i])
       return aux
+
 #expande clave
 def expandeClave(k):
-      clave=textToClave(k)
+      clave=textoAEstado(k)
       log.tolog("\nExpandiendo clave: %s\n"%k)
       log.tolog("\nMatrix inicial:")
       imprimeMatrizHex(clave)
