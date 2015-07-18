@@ -40,7 +40,7 @@ def hashValorSecreto():
     sock.sendall('hvs')
     msg=getMsg()
     vs=getValorSecreto()
-    h=sha1.sha1(msg)
+    h=sha1.sha1(msg+vs)
     msg=msg+h
     sock.sendall(msg)
     return 0
